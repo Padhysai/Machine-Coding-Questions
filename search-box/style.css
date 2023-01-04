@@ -1,0 +1,49 @@
+body{
+    background-color: #03203C;
+}
+nav{
+    padding: 0.5rem;
+    background-color: #CAD5E2;
+}
+nav h1{
+    text-align: center;
+}
+.container{
+    margin: 2rem;
+    height: 70vh;
+    display: flex;
+    flex-direction: column;
+    /* justify-content: center; */
+    align-items: center;
+}
+input{
+    padding: 0.6rem 1rem;
+    width: 20rem;
+    border-radius: 1rem;
+}
+input:focus{
+    outline: none;
+}
+
+#results{
+    margin-top: 0.5rem;
+    height: 50vh;
+    width: 20rem;
+    overflow-y: scroll;
+    background-color: #fff;
+}
+.products__main{
+    margin: 0 1rem;
+    display: flex;
+    /* justify-content: center; */
+    align-items: center;
+    gap: 1rem
+}
+.products__main img{
+    height: 50px;
+    width: 50px;
+    object-fit: cover;
+}
+.hidden{
+    display: none;
+}
