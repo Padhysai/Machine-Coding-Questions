@@ -1,5 +1,7 @@
 const API_URL = "https://dummyjson.com/products/search?q=";
 
+let hist = [];
+
 const getSearchResults = async (query) => {
   const url = API_URL + query;
   const res = await fetch(url);
@@ -7,14 +9,14 @@ const getSearchResults = async (query) => {
   return data.products;
 };
 
-const debounce = (fn, delay) => {
+const debounce = (fn, delay = 500) => {
   let timer;
-  return (...args) => {
-    boundFn = fn.bind(this, ...args);
-    if (timer) {
-      clearTimeout(timer);
-    }
-    timer = setTimeout(() => boundFn, delay);
+  return (...arguments) => {
+    const self = this;
+    const args = arguments;
+
+    clearTimeout(timer);
+    timer = setTimeout(() => fn.apply(self, args), delay);
   };
 };
 
@@ -49,18 +51,37 @@ const topLevelFunction = async (str) => {
   document.getElementById("results").classList.remove("hidden");
   const products = await getSearchResults(str);
   document.getElementById("results").innerHTML = "";
+  renderSearchResults(hist);
   renderSearchResults(products);
 };
+const pushToHistory = (searchText) => {
+  const histobj = {
+    title: searchText,
+    thumbnail: "",
+  };
+  hist.push(histobj);
+  console.log(hist);
+};
 
-// const debounceFn = debounce(topLevelFunction, 1000);
-
-document.getElementById("search").addEventListener("keyup", (e) => {
+const handleChange = (e) => {
   const qStr = e.target.value;
 
-  if (qStr !== null && qStr !== "") {
+  if (qStr) {
     // debounceFn(qStr);
     topLevelFunction(qStr);
   } else {
     document.getElementById("results").classList.add("hidden");
+  }
+};
+
+// const debounceFn = debounce(topLevelFunction, 1000);
+
+document
+  .getElementById("search")
+  .addEventListener("keyup", debounce(handleChange, 1000));
+
+document.getElementById("search").addEventListener("keypress", (e) => {
+  if (e.key === "Enter") {
+    pushToHistory(e.target.value);
   }
 });
